@@ -29,8 +29,11 @@ https://login.launchpad.net/+new_account[this URL], as described
 https://help.launchpad.net/YourAccount/NewAccount[here].
 
 In order to create your first PPA, you'll need to
-https://help.launchpad.net/YourAccount/ImportingYourPGPKey[import your PGP key to Launchpad and https://help.ubuntu.com/community/SigningCodeofConduct[sign the Ubuntu Code of Conduct].
-There is a http://www.wikihow.com/Sign-the-Ubuntu-Code-of-Conduct[nice tutorial on WikiHow] if you like pictures.
+https://help.launchpad.net/YourAccount/ImportingYourPGPKey[import your PGP key to Launchpad]
+and https://help.ubuntu.com/community/SigningCodeofConduct[sign the Ubuntu Code of Conduct].
+There is a 
+http://www.wikihow.com/Sign-the-Ubuntu-Code-of-Conduct[nice tutorial on WikiHow]
+if you like pictures.
 
 So far so good. You can now create your first PPA by following the link on your
 home page, which is something like `https://launchpad.net/~username`. I would
