@@ -9,6 +9,7 @@ Let's say we have just coded the most wonderful library `foo`,
 which--not too surprisingly--has greetings as its main purpose. 
 
 [source,c]
+.foo.h
 ----
 #ifndef FOO_H
 #define FOO_H
@@ -21,6 +22,7 @@ void say_hello();
 ----
 
 [source,c]
+.foo.c
 ----
 
 #include "foo.h"
@@ -34,6 +36,7 @@ void say_hello() {
 and test it using a quick C executable:
 
 [source,c]
+.foo_test.c
 ----
 #include "foo.h"
 
@@ -45,29 +48,29 @@ int main() {
 
 Here’s a simple Makefile with some nice features:
 
-* the name and version of the library are just parameters
-* it creates a shared object with a proper soname
-* it compiles the library with debugging symbols, optimization and 
-  strict error checking
-
-
 [source,Makefile]
 ----
 CFLAGS := -fPIC -O3 -g -Wall -Werror
 CC := gcc
 MAJOR := 0
 MINOR := 1
-NAME := foo
-VERSION := $(MAJOR).$(MINOR)
 
-lib: lib$(NAME).so.$(VERSION)
+NAME := foo
+VERSION := $(MAJOR).$(MINOR) //<1>
+
+lib: lib$(NAME).so.$(VERSION) //<2>
 
 lib$(NAME).so.$(VERSION): $(NAME).o
-	$(CC) -shared -Wl,-soname,lib$(NAME).so.$(MAJOR) $^ -o $@
+	$(CC) -shared -Wl,-soname,lib$(NAME).so.$(MAJOR) $^ -o $@ //<3>
 
 clean:
 	$(RM) *.o *.so*
 ----
+
+<1> the name <1> and version of the library are just parameters
+<2> it creates a shared object with a proper soname
+<3> it compiles the library with debugging symbols, optimization and 
+  strict error checking
 
 Nice. But what about our little test program? Let’s add some clutter to 
 the minimal Makefile:
