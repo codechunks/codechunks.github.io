@@ -5,8 +5,8 @@
 :source-highlighter: hightlightjs
 
 The problem: writing a very simple Makefile to build a C shared library.
-Let's say we have just coded the most wonderful library `foo`, which--not too surprisingly--has 
-greetings as its main purpose. 
+Let's say we have just coded the most wonderful library `foo`, 
+which--not too surprisingly--has greetings as its main purpose. 
 
 [source,c]
 ----
@@ -19,3 +19,99 @@ void say_hello();
 
 #endif
 ----
+
+[source,c]
+----
+
+#include "foo.h"
+
+void say_hello() {
+  printf("hello hello!\n");
+}
+----
+
+(Yeah, pretty impressive). We may also want to push it further, 
+and test it using a quick C executable:
+
+[source,c]
+----
+#include "foo.h"
+
+int main() {
+  say_hello();
+  return 0;
+}
+----
+
+Here’s a simple Makefile with some nice features:
+
+* the name and version of the library are just parameters
+* it creates a shared object with a proper soname
+* it compiles the library with debugging symbols, optimization and 
+  strict error checking
+
+
+[source,Makefile]
+----
+CFLAGS := -fPIC -O3 -g -Wall -Werror
+CC := gcc
+MAJOR := 0
+MINOR := 1
+NAME := foo
+VERSION := $(MAJOR).$(MINOR)
+
+lib: lib$(NAME).so.$(VERSION)
+
+lib$(NAME).so.$(VERSION): $(NAME).o
+	$(CC) -shared -Wl,-soname,lib$(NAME).so.$(MAJOR) $^ -o $@
+
+clean:
+	$(RM) *.o *.so*
+----
+
+Nice. But what about our little test program? Let’s add some clutter to 
+the minimal Makefile:
+
+[source,Makefile]
+----
+
+CFLAGS := -fPIC -O3 -g -Wall -Werror
+CC := gcc
+MAJOR := 0
+MINOR := 1
+NAME := foo
+VERSION := $(MAJOR).$(MINOR)
+
+lib: lib$(NAME).so.$(VERSION)
+
+test: $(NAME)_test
+	LD_LIBRARY_PATH=. ./$(NAME)_test
+
+$(NAME)_test: lib$(NAME).so
+	$(CC) $(NAME)_test.c -o $@ -L. -l$(NAME)
+
+lib$(NAME).so: lib$(NAME).so.$(VERSION)
+	ldconfig -v -n .
+	ln -s lib$(NAME).so.$(MAJOR) lib$(NAME).so
+
+lib$(NAME).so.$(VERSION): $(NAME).o
+	$(CC) -shared -Wl,-soname,lib$(NAME).so.$(MAJOR) $^ -o $@
+
+clean:
+	$(RM) $(NAME)_test *.o *.so*
+----
+
+The complete version has a `test` target which builds the `foo_test` executable
+(only if needed) and launches it (always). There is an intermediate step (the one
+involving `ldconfig`) which takes care of creating some symlinks needed to link
+against our `foo` library. 
+
+== References
+http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html[Program Library HOWTO] - 
+The section about shared libraries
+
+http://www.ibm.com/developerworks/library/l-shobj/[Shared objects for the object disoriented!] - 
+Quite old (2001) but very informative article
+
+http://stackoverflow.com/questions/10803109/simple-makefile-for-compiling-a-shared-object-library-file[Simple makefile for compiling a shared object library file] -
+Found on Stackoverflow (the library is written in C++, but the Makefile is adaptable to C with few modifications)
