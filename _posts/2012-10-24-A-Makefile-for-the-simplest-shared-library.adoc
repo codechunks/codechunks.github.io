@@ -77,7 +77,6 @@ the minimal Makefile:
 
 [source,Makefile]
 ----
-
 CFLAGS := -fPIC -O3 -g -Wall -Werror
 CC := gcc
 MAJOR := 0
