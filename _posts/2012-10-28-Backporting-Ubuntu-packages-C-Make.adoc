@@ -11,7 +11,7 @@ handy script `backportpackage`, which can be found in the `ubuntu-dev-utils`
 package.
 
 It's actually quite easy to backport an existing package using the standard
-developer tools -- once you find out exactly how to do it, that is. Here's my
+developer tools--once you find out exactly how to do it, that is. Here's my
 little HOWTO.
 
 And beware: rarely things go well as in this case. Sometimes the package
