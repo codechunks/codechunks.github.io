@@ -23,7 +23,7 @@
     <meta property="og:description" content="The problem: writing a very simple Makefile to build a C shared library. Let&amp;#8217;s say we have just coded the most wonderful library foo, which&amp;#8212;&amp;#8203;not too surprisingly&amp;#8212;&amp;#8203;has greetings as its main purpose...." />
     <meta property="og:url" content="https://codechunks.github.io/2012/10/24/A-Makefile-for-the-simplest-shared-library.html" />
     <meta property="article:published_time" content="2012-10-23T23:00:00.000Z" />
-    <meta property="article:modified_time" content="2016-05-19T12:15:23.077Z" />
+    <meta property="article:modified_time" content="2016-05-19T12:18:20.531Z" />
     <meta property="article:tag" content="C" />
     
     <meta name="twitter:card" content="summary" />
@@ -46,7 +46,7 @@
     "headline": "A Makefile for the simplest shared library",
     "url": "https://codechunks.github.io/2012/10/24/A-Makefile-for-the-simplest-shared-library.html",
     "datePublished": "2012-10-23T23:00:00.000Z",
-    "dateModified": "2016-05-19T12:15:23.077Z",
+    "dateModified": "2016-05-19T12:18:20.531Z",
     "keywords": "C",
     "description": "The problem: writing a very simple Makefile to build a C shared library. Let&amp;#8217;s say we have just coded the most wonderful library foo, which&amp;#8212;&amp;#8203;not too surprisingly&amp;#8212;&amp;#8203;has greetings as its main purpose...."
 }
@@ -88,7 +88,7 @@ Let&#8217;s say we have just coded the most wonderful library <code>foo</code>,
 which&#8212;&#8203;not too surprisingly&#8212;&#8203;has greetings as its main purpose.</p>
 </div>
 <div class="listingblock">
-<div class="title">foo.h</div>
+<div class="title"><code>foo.h</code></div>
 <div class="content">
 <pre class="highlight"><code class="language-c" data-lang="c">#ifndef FOO_H
 #define FOO_H
@@ -101,7 +101,7 @@ void say_hello();
 </div>
 </div>
 <div class="listingblock">
-<div class="title">foo.c</div>
+<div class="title"><code>foo.c</code></div>
 <div class="content">
 <pre class="highlight"><code class="language-c" data-lang="c">#include "foo.h"
 
@@ -115,7 +115,7 @@ void say_hello() {
 and test it using a quick C executable:</p>
 </div>
 <div class="listingblock">
-<div class="title">foo_test.c</div>
+<div class="title"><code>foo_test.c</code></div>
 <div class="content">
 <pre class="highlight"><code class="language-c" data-lang="c">#include "foo.h"
 
