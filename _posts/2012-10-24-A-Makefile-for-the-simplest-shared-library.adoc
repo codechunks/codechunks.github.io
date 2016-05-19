@@ -8,6 +8,7 @@ The problem: writing a very simple Makefile to build a C shared library.
 Let's say we have just coded the most wonderful library `foo`, which--not too surprisingly--has 
 greetings as its main purpose. 
 
+[source,c]
 ----
 #ifndef FOO_H
 #define FOO_H
