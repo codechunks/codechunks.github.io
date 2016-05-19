@@ -1,0 +1,20 @@
+= A Makefile for the simplest shared library
+
+:published_at: 2012-10-24
+:hp-tags: C
+:source-highlighter: hightlightjs
+
+The problem: writing a very simple Makefile to build a C shared library.
+Let's say we have just coded the most wonderful library `foo`, which--not too surprisingly--has 
+greetings as its main purpose. 
+
+----
+#ifndef FOO_H
+#define FOO_H
+
+#include <stdio.h>
+
+void say_hello();
+
+#endif
+----
