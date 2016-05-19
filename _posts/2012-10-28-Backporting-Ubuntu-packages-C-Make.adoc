@@ -1,5 +1,9 @@
 = Backporting Ubuntu packages: CMake
 
+:published_at: 2012-10-28
+:hp-tags: C
+:source-highlighter: hightlightjs
+
 Here's how I backported the Ubuntu package for CMake 2.8.5 to natty, making 
 it available in a https://launchpad.net/~bcandrea/+archive/backports[Launchpad PPA]. 
 Instead of using `apt-get source`, `debuild` and `dput` manually I opted for the
