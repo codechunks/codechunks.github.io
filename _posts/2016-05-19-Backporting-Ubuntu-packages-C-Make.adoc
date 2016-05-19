@@ -1,0 +1,110 @@
+= Backporting Ubuntu packages: CMake
+
+Here's how I backported the Ubuntu package for CMake 2.8.5 to natty, making 
+it available in a https://launchpad.net/~bcandrea/+archive/backports[Launchpad PPA]. 
+Instead of using `apt-get source`, `debuild` and `dput` manually I opted for the
+handy script `backportpackage`, which can be found in the `ubuntu-dev-utils`
+package.
+
+It's actually quite easy to backport an existing package using the standard
+developer tools -- once you find out exactly how to do it, that is. Here's my
+little HOWTO.
+
+And beware: rarely things go well as in this case. Sometimes the package
+specification needs to be modified to make it work (for instance, packaging CMake
+2.8.5 for lucid is not trivial at all).
+
+== Launchpad
+
+https://launchpad.net[Launchpad] (among other things) is a good platform for
+generating and publishing Ubuntu and Debian packages. It allows users to set up
+private package repositories (PPAs) and hosts a farm of build servers as well.
+
+You first need to set up an account (for free) at
+https://login.launchpad.net/+new_account[this URL], as described
+https://help.launchpad.net/YourAccount/NewAccount[here].
+
+In order to create your first PPA, you'll need to
+https://help.launchpad.net/YourAccount/ImportingYourPGPKey[import your PGP key to Launchpad and https://help.ubuntu.com/community/SigningCodeofConduct[sign the Ubuntu Code of Conduct].
+There is a http://www.wikihow.com/Sign-the-Ubuntu-Code-of-Conduct[nice tutorial on WikiHow] if you like pictures.
+
+So far so good. You can now create your first PPA by following the link on your
+home page, which is something like `https://launchpad.net/~username`. I would
+suggest to pick a meaningful short name for the URL (I chose `backports` for
+this one) instead of just `ppa`.
+
+== Setting up your system
+
+Your local Ubuntu box needs to be configured (only once) before trying to backport
+packages. First install some prerequisites:
+
+ $ sudo apt-get install cowbuilder ubuntu-dev-tools
+
+Then create the base folder which will be used to setup the chrooted environment
+in which the package will be built:
+
+ $ mkdir -p ~/pbuilder/
+ $ sudo cowbuilder --create --distribution natty --components "main restricted universe multiverse" --basepath=$HOME/pbuilder/natty-base.cow
+
+If you have more than one PGP key in your local keyring (I do), you may also want
+to specify which one to use when signing packages. Just list your keys with 
+`gpg --list-keys`, and copy the key id to `/etc/devscripts.conf` under the debsign
+stanza:
+
+ DEBSIGN_KEYID=FDCCCD6E
+
+Last problem to avoid: the personal package builders cowbuilder and pbuilder must
+be allowed to preserve the environment when called using `sudo`. Create the file
+`/etc/sudoers.d/pbuilders` using the command
+
+ $ sudo visudo -f /etc/sudoers.d/pbuilders
+
+and put the following two lines into it:
+
+ Cmnd_Alias PBUILDERS = /usr/sbin/pbuilder, /usr/sbin/cowbuilder
+ ALL ALL=(ALL) SETENV: PBUILDERS
+
+All done. Let's backport the package (finally).
+
+== Building and uploading the package 
+
+We'll work in a temporary directory, so first create it.
+
+ $ mkdir -p ~/backports/cmake/natty
+
+Now cd into it:
+
+ $ cd ~/backports/cmake/natty
+
+You should test the package build before the submission to Launchpad; it can be
+done by running `backportpackage` with the `-b` option:
+
+ $ BASEPATH=~/pbuilder/natty-base.cow DEBEMAIL=bcandrea@gmail.com DEBFULLNAME="Andrea Bernardo Ciddio" backportpackage -B cowbuilder -b -s oneiric -d natty -w . cmake
+
+A brief explanation of the options:
+
+* `BASEPATH=~/pbuilder/natty-base.cow`: this tells `cowbuilder` where to find the
+  base image for the chroot
+* `DEBEMAIL=bcandrea@gmail.com DEBFULLNAME="Andrea Bernardo Ciddio"`: those values
+  will appear in the generated Debian package
+* `-B cowbuilder`: select `cowbuilder` to create the package (`pbuilder` is the
+  default)
+* `-b`: build the package completely and generate .deb files
+* `-s oneiric -d natty`: source and destination codenames, respectively
+* `-w .`: use the current path as a local build directory
+
+Now that everything seems to be working, the package can be uploaded to our freshly created PPA:
+
+ $ DEBEMAIL=bcandrea@gmail.com DEBFULLNAME="Andrea Bernardo Ciddio" backportpackage -s oneiric -d natty -u ppa:bcandrea/backports cmake
+
+
+== References
+
+* http://www.simonschneegans.de/?p=346[How-To: PPA with CMake!] - 
+  A useful tutorial about PPAs (it's not about _packaging_ CMake itself, tough)
+
+* https://help.launchpad.net/Packaging/PPA/[Personal Package Archives] - 
+  Everything you always wanted to know about PPAs, but were too afraid to ask
+
+* http://developer.ubuntu.com/packaging/html/[Ubuntu packaging guide] -
+  The ultimate source of information about Ubuntu packages
