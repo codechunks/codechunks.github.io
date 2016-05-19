@@ -9,7 +9,7 @@ Let's say we have just coded the most wonderful library `foo`,
 which--not too surprisingly--has greetings as its main purpose. 
 
 [source,c]
-.`foo.h`
+.foo.h
 ----
 #ifndef FOO_H
 #define FOO_H
@@ -22,7 +22,7 @@ void say_hello();
 ----
 
 [source,c]
-.`foo.c`
+.foo.c
 ----
 
 #include "foo.h"
@@ -36,7 +36,7 @@ void say_hello() {
 and test it using a quick C executable:
 
 [source,c]
-.`foo_test.c`
+.foo_test.c
 ----
 #include "foo.h"
 
@@ -67,7 +67,7 @@ clean:
 	$(RM) *.o *.so*
 ----
 
-<1> the name <1> and version of the library are just parameters
+<1> the name and version of the library are just parameters
 <2> it creates a shared object with a proper soname
 <3> it compiles the library with debugging symbols, optimization and 
   strict error checking
