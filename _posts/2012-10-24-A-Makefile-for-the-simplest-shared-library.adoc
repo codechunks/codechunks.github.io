@@ -110,11 +110,9 @@ involving `ldconfig`) which takes care of creating some symlinks needed to link
 against our `foo` library. 
 
 == References
-http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html[Program Library HOWTO] - 
+* http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html[Program Library HOWTO] - 
 The section about shared libraries
-
-http://www.ibm.com/developerworks/library/l-shobj/[Shared objects for the object disoriented!] - 
+* http://www.ibm.com/developerworks/library/l-shobj/[Shared objects for the object disoriented!] - 
 Quite old (2001) but very informative article
-
-http://stackoverflow.com/questions/10803109/simple-makefile-for-compiling-a-shared-object-library-file[Simple makefile for compiling a shared object library file] -
+* http://stackoverflow.com/questions/10803109/simple-makefile-for-compiling-a-shared-object-library-file[Simple makefile for compiling a shared object library file] -
 Found on Stackoverflow (the library is written in C++, but the Makefile is adaptable to C with few modifications)
